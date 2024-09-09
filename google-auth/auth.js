@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const passport = require('passport');
+require('dotenv').config();
 
 router.get(
     '/google/callback',
@@ -26,16 +27,14 @@ router.get('/login/success', (req, res) => {
     }
 });
 
-router.get('login/failed', (req, res) => {
+router.get('/login/failed', (req, res) => {
     res.status(401).json({
         error: true,
         message: 'Login failed',
     });
 });
 
-router.get('/google', passport.authenticate('google', {
-    scope: ['email', 'profile'],
-}));
+router.get('/google', passport.authenticate('google', ['profile', 'email']));
 
 router.get('/logout', (req, res) => {
     req.logout();

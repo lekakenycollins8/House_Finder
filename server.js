@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const passport = require('passport');
 const cookieSession = require('cookie-session');
+const passportSetup = require('./google-auth/passport');
 
 require('./google-auth/passport');
 const authRoutes = require('./google-auth/auth');
@@ -12,8 +13,8 @@ const app = express();
 app.use(
     cookieSession({
         name: 'session',
-        keys: [lekakenycollins999],
-        maxAge: 24 * 60 * 60 * 100,
+        keys: [process.env.SESSION_KEY],
+        maxAge: 24 * 60 * 60 * 1000,
     })
 );
 
@@ -23,7 +24,7 @@ app.use(passport.session());
 app.use(
     cors({
         origin: 'http://localhost:3000',
-        methoids: ['GET', 'POST', 'PUT', 'DELETE'],
+        methods: ['GET', 'POST', 'PUT', 'DELETE'],
         credentials: true,
     })
 );
