@@ -4,7 +4,7 @@ import styles from './styles.module.css';
 const Login = () => {
     const googleAuth = () => {
         window.open(
-            `${process.env.REACT_APP_API_URL}/auth/google/callback`,
+            `${process.env.REACT_APP_API_URL}auth/google/callback`,
             "_self"
         );
     };
