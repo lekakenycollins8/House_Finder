@@ -4,7 +4,7 @@ const cors = require('cors');
 const passport = require('passport');
 const cookieSession = require('cookie-session');
 const passportSetup = require('./google-auth/passport');
-const pool = require('./config/db');
+const sequelize = require('./config/db');
 
 require('./google-auth/passport');
 const authRoutes = require('./google-auth/auth');

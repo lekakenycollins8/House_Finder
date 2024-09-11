@@ -1,16 +1,17 @@
 const { Sequelize } = require('sequelize');
 require('dotenv').config();
 
-const sequelize = new Sequelize(
-    process.env.SUPABASE_DB_HOST,
-    process.env.SUPABASE_DB_NAME,
-    process.env.SUPABASE_DB_PASSWORD,
-    {
-        host: process.env.SUPABASE_DB_HOST,
-        dialect: 'postgres',
-        port: process.env.SUPABASE_DB_PORT,
-    }
-);
+// Encode special characters in the password
+const encodedPassword = encodeURIComponent(process.env.SUPABASE_DB_PASSWORD);
+
+// Create a connection string
+const connectionString = `postgres://${process.env.SUPABASE_DB_USER}:${encodedPassword}@${process.env.SUPABASE_DB_HOST}:${process.env.SUPABASE_DB_PORT}/${process.env.SUPABASE_DB_NAME}`;
+
+// Create a new Sequelize instance using the connection string
+const sequelize = new Sequelize(connectionString, {
+    dialect: 'postgres',
+    logging: false, // Set to true if you want to log SQL queries
+});
 
 sequelize
     .authenticate()
