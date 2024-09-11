@@ -22,6 +22,7 @@ passport.use(
                         googleId: profile.id,
                         displayName: profile.displayName,
                         email: profile.emails[0].value,
+                        profilePicture: profile.photos[0].value,
                     });
                     done(null, newUser);
                 }
@@ -34,12 +35,17 @@ passport.use(
 );
 
 passport.serializeUser((user, done) => {
-    done(null, user);
+    done(null, user.id);
 }
 );
 
-passport.deserializeUser((user, done) => {
-    done(null, user);
+passport.deserializeUser(async(id, done) => {
+    try {
+        const user = await User.findByPk(id);
+        done(null, user);
+    } catch (error) {
+        done(error, null);
+    }
 }
 );
 

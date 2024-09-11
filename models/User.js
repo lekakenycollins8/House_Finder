@@ -16,6 +16,10 @@ const User = sequelize.define('User', {
         allowNull: false,
         unique: true,
     },
+    profilePicture: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
 });
 
 module.exports = User;

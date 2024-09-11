@@ -22,4 +22,12 @@ sequelize
         console.error('Unable to connect to the database:', error);
     });
 
+sequelize.sync({force: false})
+    .then(() => {
+        console.log('Database & tables created!');
+    })
+    .catch((error) => {
+        console.error('Error creating the database and tables:', error);
+    });
+
 module.exports = sequelize;
