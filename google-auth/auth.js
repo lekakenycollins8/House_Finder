@@ -12,6 +12,9 @@ router.get(
 
 router.get('/login/success', (req, res) => {
     if (req.user) {
+        if (!req.user.role) {
+            return res.redirect(`${process.env.CLIENT_URL}/role`);
+        }
         res.status(200).json({
             success: true,
             message: 'User has successfully authenticated',
