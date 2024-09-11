@@ -5,7 +5,7 @@ require('dotenv').config();
 router.get(
     '/google/callback',
     passport.authenticate('google', {
-        successRedirect: process.env.CLIENT_URL,
+        successRedirect: process.env.CLIENT_URL+'/role',
         failureRedirect: '/login/failed',
     })
 );
@@ -47,14 +47,6 @@ router.get('/logout', (req, res) => {
         }
         res.status(200).json({ message: 'User logged out' });
     });
-});
-
-router.get('/current-user', (req, res) => {
-    if (req.isAuthenticated()) {
-        res.json(req.user);
-    } else {
-        res.status(401).json({ message: 'Not authenticated' });
-    }
 });
 
 module.exports = router;

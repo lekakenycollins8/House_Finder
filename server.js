@@ -6,9 +6,11 @@ const cookieSession = require('cookie-session');
 const session = require('express-session');
 const passportSetup = require('./google-auth/passport');
 const sequelize = require('./config/db');
+const roleRoutes = require('./routes/role');
 
 require('./google-auth/passport');
 const authRoutes = require('./google-auth/auth');
+
 
 const app = express();
 
@@ -36,6 +38,7 @@ app.use(
 );
 
 app.use('/auth', authRoutes);
+app.use('/role', roleRoutes);
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => { console.log(`Server running on port ${PORT}`) });
