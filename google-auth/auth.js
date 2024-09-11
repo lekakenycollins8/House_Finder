@@ -29,6 +29,7 @@ router.get('/login/success', (req, res) => {
 
 router.get('/login/failed', (req, res) => {
     res.status(401).json({
+        success: false,
         error: true,
         message: 'Login failed',
     });
@@ -37,8 +38,20 @@ router.get('/login/failed', (req, res) => {
 router.get('/google', passport.authenticate('google', ['profile', 'email']));
 
 router.get('/logout', (req, res) => {
-    req.logout();
-    res.redirect(process.env.CLIENT_URL);
+    req.logout((err) => {
+        if (err) {
+            return res.status(500).json({ message: 'Logout failed' });
+        }
+        res.status(200).json({ message: 'User logged out' });
+    });
+});
+
+router.get('/current-user', (req, res) => {
+    if (req.isAuthenticated()) {
+        res.json(req.user);
+    } else {
+        res.status(401).json({ message: 'Not authenticated' });
+    }
 });
 
 module.exports = router;

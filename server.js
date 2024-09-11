@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const passport = require('passport');
 const cookieSession = require('cookie-session');
+const session = require('express-session');
 const passportSetup = require('./google-auth/passport');
 const sequelize = require('./config/db');
 
@@ -12,12 +13,16 @@ const authRoutes = require('./google-auth/auth');
 const app = express();
 
 app.use(
-    cookieSession({
-        name: 'session',
-        keys: [process.env.SESSION_KEY],
-        maxAge: 24 * 60 * 60 * 1000,
+    session({
+        secret: process.env.SESSION_KEY,
+        resave: false,
+        saveUninitialized: true,
+        cookie: {
+            secure: process.env.NODE_ENV === 'production',
+            maxAge: 1000 * 60 * 60 * 24,
+        }
     })
-);
+)
 
 app.use(passport.initialize());
 app.use(passport.session());
