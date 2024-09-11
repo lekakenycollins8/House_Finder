@@ -1,5 +1,6 @@
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const passport = require('passport');
+const User = require('../models/User');
 require('dotenv').config();
 
 passport.use(
@@ -10,8 +11,24 @@ passport.use(
             callbackURL: '/auth/google/callback',
             scope: ['profile', 'email'],
         },
-        function(accessToken, refreshToken, profile, callback) {
-            callback(null, profile);
+        async (accessToken, refreshToken, profile, done) => {
+            try {
+                const user = await User.findOne({ where: { googleId: profile.id } });
+                if (user) {
+                    done(null, user);
+                }
+                else {
+                    const newUser = await User.create({
+                        googleId: profile.id,
+                        displayName: profile.displayName,
+                        email: profile.emails[0].value,
+                    });
+                    done(null, newUser);
+                }
+            } catch (error) {
+                console.error('Error saving user to database:', error);
+                done(error, null);
+            }
         }
     )
 );
