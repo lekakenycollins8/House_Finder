@@ -6,13 +6,17 @@ const cookieSession = require('cookie-session');
 const session = require('express-session');
 const passportSetup = require('./google-auth/passport');
 const sequelize = require('./config/db');
-const roleRoutes = require('./routes/role');
 
 require('./google-auth/passport');
 const authRoutes = require('./google-auth/auth');
+const roleRoutes = require('./routes/role');
+const houseRoutes = require('./routes/house');
 
 
 const app = express();
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(
     session({
@@ -39,6 +43,7 @@ app.use(
 
 app.use('/auth', authRoutes);
 app.use('/role', roleRoutes);
+app.use('/house', houseRoutes);
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => { console.log(`Server running on port ${PORT}`) });

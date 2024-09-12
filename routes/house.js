@@ -56,4 +56,14 @@ router.post('/create-house', ensureAuthenticated, ensureLandlord, upload.fields(
     }
 });
 
+router.get('/my-houses', ensureAuthenticated, ensureLandlord, async (req, res) => {
+    try {
+        const houses = await House.findAll({ where: { ownerId: req.user.id } });
+        res.status(200).json({ houses });
+    } catch (error) {
+        console.error('Error fetching houses:', error);
+        res.status(500).json({ message: 'Error fetching houses' });
+    }
+});
+
 module.exports = router;
