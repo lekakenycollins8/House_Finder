@@ -2,17 +2,27 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import styles from './styles.module.css';
 
-const RoleSelection = () => {
+const RoleSelection = ({ setRole }) => { // Receive setRole as a prop
     const navigate = useNavigate();
 
     const handleRoleSelection = async (role) => {
         try {
-            await axios.post(
-                `${process.env.REACT_APP_API_URL}auth/role`,
+            const response = await axios.post(
+                `${process.env.REACT_APP_API_URL}/role`, // Ensure API URL is correct
                 { role },
                 { withCredentials: true }
             );
-            navigate('/'); // Navigate to home page after successful role assignment
+
+            if (response.status === 200 || response.status === 201) { // Ensure a successful response
+                setRole(role); // Update role state in App
+                if (role === 'landlord') {
+                    navigate('/my-houses'); // Navigate to landlord dashboard after successful role assignment
+                } else {
+                    navigate('/'); // Navigate to home page for renter
+                }
+            } else {
+                console.error('Failed to assign role');
+            }
         } catch (error) {
             console.error('Error selecting role:', error);
         }

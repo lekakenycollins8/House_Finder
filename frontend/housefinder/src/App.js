@@ -6,6 +6,8 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import RoleSelection from './pages/RoleSelection';
+import LandLordListing from './components/LandlordListing';
+import LandlordDashboard from './components/LandlordDashbooard';
 
 
 function App() {
@@ -37,6 +39,9 @@ function App() {
         <Route exact path="/login" element={user? <Navigate to="/role" /> : <Login />} />
         <Route exact path="/signup" element={user? <Navigate to="/" /> : <Signup />} />
         <Route exact path="/role" element={<RoleSelection setRole={setRole} /> } />
+        <Route exact path="/create-house" element={<LandLordListing/> } />
+        <Route path="/my-houses" element={<LandlordDashboard />}/>
+        <Route path="/create-house" element={<LandLordListing />} />
       </Routes>
     </div>
   );

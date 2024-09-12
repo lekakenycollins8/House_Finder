@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { House, User } = require('../models');
+const House = require('../models/House');
+const User = require('../models/User');
 const upload = require('../config/uploads');
 
 //Middleware to ensure user is authenticated
@@ -58,7 +59,10 @@ router.post('/create-house', ensureAuthenticated, ensureLandlord, upload.fields(
 
 router.get('/my-houses', ensureAuthenticated, ensureLandlord, async (req, res) => {
     try {
-        const houses = await House.findAll({ where: { ownerId: req.user.id } });
+        const houses = await House.findAll({
+            where: { ownerId: req.user.id },
+            order: [['createdAt', 'DESC']],
+        });
         res.status(200).json({ houses });
     } catch (error) {
         console.error('Error fetching houses:', error);
