@@ -34,9 +34,9 @@ function App() {
     <div className="container">
       <Routes>
         <Route exact path="/" element={user && role? <Home user={user} /> : <Navigate to="/login" />} />
-        <Route exact path="/login" element={user? <Navigate to="/" /> : <Login />} />
+        <Route exact path="/login" element={user? <Navigate to="/role" /> : <Login />} />
         <Route exact path="/signup" element={user? <Navigate to="/" /> : <Signup />} />
-        <Route exact path="/role" element={user && role? <RoleSelection setRole={setRole} /> : <Navigate to="/role" />} />
+        <Route exact path="/role" element={<RoleSelection setRole={setRole} /> } />
       </Routes>
     </div>
   );
