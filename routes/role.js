@@ -9,7 +9,7 @@ const ensureAuthenticated = (req, res, next) => {
     res.status(401).json({ message: 'Unauthorized' });
   };
 
-router.post('/role', async (req, res) => {
+router.post('/create-role', async (req, res) => {
     const { role } = req.body;
     if (req.isAuthenticated() && role) {
         try {

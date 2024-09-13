@@ -6,9 +6,10 @@ const RoleSelection = ({ setRole }) => { // Receive setRole as a prop
     const navigate = useNavigate();
 
     const handleRoleSelection = async (role) => {
+        console.log(`Role selected: ${role}`);
         try {
             const response = await axios.post(
-                `${process.env.REACT_APP_API_URL}/role`, // Ensure API URL is correct
+                `${process.env.REACT_APP_API_URL}role/create-role`, // Ensure API URL is correct
                 { role },
                 { withCredentials: true }
             );
@@ -18,13 +19,13 @@ const RoleSelection = ({ setRole }) => { // Receive setRole as a prop
                 if (role === 'landlord') {
                     navigate('/my-houses'); // Navigate to landlord dashboard after successful role assignment
                 } else {
-                    navigate('/'); // Navigate to home page for renter
+                    navigate('/role'); // Navigate to home page for renter
                 }
             } else {
                 console.error('Failed to assign role');
             }
         } catch (error) {
-            console.error('Error selecting role:', error);
+            console.error('Error selecting role for this project:', error);
         }
     };
 

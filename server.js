@@ -6,6 +6,7 @@ const cookieSession = require('cookie-session');
 const session = require('express-session');
 const passportSetup = require('./google-auth/passport');
 const sequelize = require('./config/db');
+const bodyParser = require('body-parser');
 
 require('./google-auth/passport');
 const authRoutes = require('./google-auth/auth');
@@ -15,8 +16,8 @@ const houseRoutes = require('./routes/house');
 
 const app = express();
 
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(
     session({

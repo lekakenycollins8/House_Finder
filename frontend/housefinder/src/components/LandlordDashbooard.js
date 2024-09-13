@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 const LandlordDashboard = () => {
     const [houses, setHouses] = useState([]);
@@ -7,7 +8,7 @@ const LandlordDashboard = () => {
     useEffect(() => {
         const fetchHouses = async () => {
             try {
-                const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/house/my-houses`, {
+                const { data } = await axios.get(`${process.env.REACT_APP_API_URL}house/my-houses`, {
                     withCredentials: true,
                 });
                 setHouses(data.houses);
@@ -42,13 +43,12 @@ const LandlordDashboard = () => {
                 ))
             ) : (
                 <div className="text-center">
-                    <p className="text-gray-700 mb-4">No houses available.</p>
-                    <button 
-                        onClick={() => window.location.href = '/create-house'} 
+                    <Link 
+                        to="/create-house"
                         className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
                     >
                         Create New House Listing
-                    </button>
+                    </Link>
                 </div>
             )}
         </div>

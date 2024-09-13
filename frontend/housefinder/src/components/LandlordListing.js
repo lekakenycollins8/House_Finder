@@ -20,21 +20,21 @@ const LandLordListing = () => {
         formData.append('location', location);
         formData.append('price', price);
         formData.append('availableFrom', availableFrom);
-        images.forEach((image) => {
-            formData.append('images', image);
-        });
+        for (let i = 0; i < images.length; i++) {
+            formData.append('images', images[i]);
+          }
         if (video) {
             formData.append('video', video);
         }
 
         try {
-            await axios.post(`${process.env.REACT_APP_API_URL}/house/create-house`, formData, {
+            await axios.post(`${process.env.REACT_APP_API_URL}house/create-house`, formData, {
                 withCredentials: true,
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-            navigate('/dashboard');
+            navigate('/my-houses');   
         } catch (error) {
             console.error('Error creating house listing:', error);
         }

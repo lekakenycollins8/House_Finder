@@ -1,22 +1,21 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import './App.css';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Home from './pages/Home';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import Home from './pages/Home'
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import RoleSelection from './pages/RoleSelection';
-import LandLordListing from './components/LandlordListing';
 import LandlordDashboard from './components/LandlordDashbooard';
-
+import LandLordListing from './components/LandlordListing';
+import styles from './App.css';
 
 function App() {
   const [user, setUser] = useState(null);
-  const [role, setRole] = useState(null)
+  const [role, setRole] = useState(null);
 
   const getUser = async () => {
     try {
-      const url = `${process.env.REACT_APP_API_URL}/auth/login/success`;
+      const url = `${process.env.REACT_APP_API_URL}auth/login/success`;
       const { data } = await axios.get(url, {
         withCredentials: true,
       });
@@ -27,21 +26,63 @@ function App() {
       setUser(null);
       setRole(null);
     }
-  }
+  };
 
   useEffect(() => {
     getUser();
   }, []);
+
   return (
-    <div className="container">
+    <div className={styles.container}>
       <Routes>
-        <Route exact path="/" element={user && role? <Home user={user} /> : <Navigate to="/login" />} />
-        <Route exact path="/login" element={user? <Navigate to="/role" /> : <Login />} />
-        <Route exact path="/signup" element={user? <Navigate to="/" /> : <Signup />} />
-        <Route exact path="/role" element={<RoleSelection setRole={setRole} /> } />
-        <Route exact path="/create-house" element={<LandLordListing/> } />
-        <Route path="/my-houses" element={<LandlordDashboard />}/>
-        <Route path="/create-house" element={<LandLordListing />} />
+        <Route
+          exact
+          path="/"
+          element={
+            user ? (
+              role ? (
+                <Home user={user} />
+              ) : (
+                <Navigate to="/role" />
+              )
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
+        />
+        <Route
+          exact
+          path="/login"
+          element={
+            user ? (
+              role ? (
+                <Navigate to="/" />
+              ) : (
+                <Navigate to="/role" />
+              )
+            ) : (
+              <Login />
+            )
+          }
+        />
+        <Route
+          exact
+          path="/signup"
+          element={user ? <Navigate to="/" /> : <Signup />}
+        />
+        <Route
+          exact
+          path="/role"
+          element={<RoleSelection setRole={setRole} />}
+        />
+        <Route
+          path="/my-houses"
+          element={role === 'landlord' ? <LandlordDashboard /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/create-house"
+          element={role === 'landlord' ? <LandLordListing /> : <Navigate to="/" />}
+        />
       </Routes>
     </div>
   );
