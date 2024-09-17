@@ -33,16 +33,27 @@ const LandlordDashboard = () => {
                         <p className="text-gray-700 mb-2">Available From: {new Date(house.availableFrom).toLocaleDateString()}</p>
                         <div className="flex flex-wrap mb-2">
                             {house.imageUrls.map((imageUrl) => (
-                                <img key={imageUrl} src={imageUrl} alt={house.title} className="w-32 h-32 object-cover m-1 rounded" />
+                                <img key={imageUrl} src={`${process.env.REACT_APP_API_URL}${imageUrl}`} alt={house.title} className="w-32 h-32 object-cover m-1 rounded" />
                             ))}
                         </div>
                         <div className="mb-2">
-                            {house.videoUrl && <video src={house.videoUrl} controls className="w-full rounded" />}
+                            {house.videoUrl && <video src={`${process.env.REACT_APP_API_URL}${house.videoUrl}`} controls className="w-full rounded" />}
                         </div>
                     </div>
                 ))
             ) : (
                 <div className="text-center">
+                    <Link 
+                        to="/create-house"
+                        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
+                    >
+                        Create New House Listing
+                    </Link>
+                </div>
+            )}
+            {/* Always show the "Create New House Listing" button here */}
+            {houses.length > 0 && (
+                <div className="text-center mt-4">
                     <Link 
                         to="/create-house"
                         className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"

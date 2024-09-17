@@ -45,6 +45,7 @@ app.use(
 app.use('/auth', authRoutes);
 app.use('/role', roleRoutes);
 app.use('/house', houseRoutes);
+app.use('/uploads', express.static('uploads'));
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => { console.log(`Server running on port ${PORT}`) });

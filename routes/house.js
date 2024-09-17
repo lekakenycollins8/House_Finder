@@ -29,8 +29,10 @@ router.post('/create-house', ensureAuthenticated, ensureLandlord, upload.fields(
 ]), async (req, res) => {
     const { title, description, location, price, availableFrom } = req.body;
 
-    const images = req.files['images'] ? req.files['images'].map(file => file.path) : [];
-    const video = req.files['video'] ? req.files['video'][0].path : '';
+    const images = req.files['images'] ? req.files['images'].map(file => `/uploads/${file.filename}`) : [];
+    const video = req.files['video'] 
+    ? `/uploads/${req.files['video'][0].filename}` 
+    : '';
 
     if (!title || !description || !location || !price || !availableFrom) {
         return res.status(400).json({ message: 'Please provide all required fields' });
