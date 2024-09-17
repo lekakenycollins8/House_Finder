@@ -4,26 +4,65 @@ import { Link } from 'react-router-dom';
 
 const RenterDashboard = () => {
     const [houses, setHouses] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+
+    const fetchHouses = async (search = '') => {
+        setLoading(true);
+        setError(null);
+
+        try {
+            const { data } = await axios.get(`${process.env.REACT_APP_API_URL}house/house-listings`, {
+                params: { search },
+                withCredentials: true,
+            });
+            setHouses(data.houses);
+        } catch (error) {
+            console.error('Error fetching houses:', error);
+            setError('An error occurred when loading house listings. Please try again later.');
+        } finally {
+            setLoading(false);
+        }
+    };
 
     useEffect(() => {
-        const fetchHouses = async () => {
-            try {
-                const { data } = await axios.get(`${process.env.REACT_APP_API_URL}house/house-listings`, {
-                    withCredentials: true,
-                });
-                setHouses(data.houses);
-            } catch (error) {
-                console.error('Error fetching houses:', error);
-            }
-        };
-
         fetchHouses();
     }, []);
+
+    const handleSearch = (event) => {
+        event.preventDefault();
+        fetchHouses(searchTerm);
+    };
 
     return (
         <div className="container mx-auto p-4">
             <h1 className="text-3xl font-bold mb-4">House Listings</h1>
-            {houses.length > 0 ? (
+
+            {/** Search form */}
+            <form onSubmit={handleSearch} className="mb-4">
+                <input
+                    type="text"
+                    placeholder="Search by title, location, description or price"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="w-full p-2 border border-gray-300 rounded"
+                />
+                <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 mt-2">Search
+                </button>
+            </form>
+
+            {/* Show loading spinner */}
+            {/* Show loading spinner */}
+            {loading ? (
+                <div className="text-center">
+                    <p>Loading...</p>
+                </div>
+            ) : error ? (
+                <div className="text-center">
+                    <p>{error}</p>
+                </div>
+            ) : houses.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     {houses.map((house) => (
                         <Link key={house.id} to={`/house/${house.id}`} className="bg-white shadow-md rounded-lg p-4">
@@ -50,6 +89,6 @@ const RenterDashboard = () => {
             )}
         </div>
     );
-    };
+};
 
 export default RenterDashboard;

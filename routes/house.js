@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const { Op } = require('sequelize');
 const House = require('../models/House');
 const User = require('../models/User');
 const upload = require('../config/uploads');
@@ -74,13 +75,26 @@ router.get('/my-houses', ensureAuthenticated, ensureLandlord, async (req, res) =
     }
 });
 
-// Route for renter to view all houses
+// Route for renter to view all houses/ fecth all house listings and handle search
 
 router.get('/house-listings', ensureAuthenticated, async (req, res) => {
     try {
-        const houses = await House.findAll({
+        const { search } = req.query;
+
+        let queryOptions = {
+            where: {},
             order: [['createdAt', 'DESC']],
-        });
+        };
+
+        if (search) {
+            queryOptions.where[Op.or] = [
+                { title: { [Op.iLike]: `%${search}%` } },
+                { description: { [Op.iLike]: `%${search}%` } },
+                { location: { [Op.iLike]: `%${search}%` } },
+            ];
+        }
+
+        const houses = await House.findAll(queryOptions);
         res.status(200).json({ houses });
     } catch (error) {
         console.error('Error fetching houses:', error);
@@ -102,5 +116,6 @@ router.get('/house/:id', ensureAuthenticated, async (req, res) => {
         res.status(500).json({ message: 'Error fetching house' });
     }
 });
+
 
 module.exports = router;
