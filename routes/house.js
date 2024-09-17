@@ -88,4 +88,19 @@ router.get('/house-listings', ensureAuthenticated, async (req, res) => {
     }
 });
 
+// Route for renter to view a single house
+
+router.get('/house/:id', ensureAuthenticated, async (req, res) => {
+    try {
+        const house = await House.findByPk(req.params.id);
+        if (!house) {
+            return res.status(404).json({ message: 'House not found' });
+        }
+        res.status(200).json({ house });
+    } catch (error) {
+        console.error('Error fetching house:', error);
+        res.status(500).json({ message: 'Error fetching house' });
+    }
+});
+
 module.exports = router;

@@ -8,6 +8,7 @@ import RoleSelection from './pages/RoleSelection';
 import LandlordDashboard from './components/LandlordDashbooard';
 import LandLordListing from './components/LandlordListing';
 import RenterDashboard from './components/RenterDashboard';
+import HouseDetails from './components/HouseDetails';
 import styles from './App.css';
 
 function App() {
@@ -87,6 +88,10 @@ function App() {
         <Route
           path="/renter-dashboard"
           element={role === 'renter' ? <RenterDashboard /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/house/:id"
+          element={<HouseDetails />}
         />
       </Routes>
     </div>

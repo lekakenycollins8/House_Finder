@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-// import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const RenterDashboard = () => {
     const [houses, setHouses] = useState([]);
@@ -26,7 +26,7 @@ const RenterDashboard = () => {
             {houses.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     {houses.map((house) => (
-                        <div key={house.id} className="bg-white shadow-md rounded-lg p-4">
+                        <Link key={house.id} to={`/house/${house.id}`} className="bg-white shadow-md rounded-lg p-4">
                             <h2 className="text-2xl font-semibold mb-2">{house.title}</h2>
                             <p className="text-gray-700 mb-2">{house.description}</p>
                             <p className="text-gray-700 mb-2">{house.location}</p>
@@ -40,7 +40,7 @@ const RenterDashboard = () => {
                             <div className="mb-2">
                                 {house.videoUrl && <video src={`${process.env.REACT_APP_API_URL}${house.videoUrl}`} controls className="w-full rounded" />}
                             </div>
-                        </div>
+                        </Link>
                     ))}
                 </div>
             ) : (
