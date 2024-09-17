@@ -1,9 +1,36 @@
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import styles from './styles.module.css';
 
 const RoleSelection = ({ setRole }) => { // Receive setRole as a prop
     const navigate = useNavigate();
+
+    // Fetch the user's role when the component mounts
+    useEffect(() => {
+        const fetchUserRole = async () => {
+            try {
+                const response = await axios.get(
+                    `${process.env.REACT_APP_API_URL}role/user-role`,
+                    { withCredentials: true }
+                );
+                const { role } = response.data;
+
+                if (role) {
+                    setRole(role); // Update the role in the frontend state
+                    if (role === 'landlord') {
+                        navigate('/my-houses'); // Redirect landlord to their dashboard
+                    } else {
+                        navigate('/role'); // Redirect renter to their home/dashboard
+                    }
+                }
+            } catch (error) {
+                console.error('Error fetching user role:', error);
+            }
+        };
+
+        fetchUserRole();
+    }, [navigate, setRole]); // Dependencies: `navigate` and `setRole`
 
     const handleRoleSelection = async (role) => {
         console.log(`Role selected: ${role}`);

@@ -20,4 +20,14 @@ router.post('/create-role', async (req, res) => {
         }
     }
 });
+
+router.get('/user-role', ensureAuthenticated, async (req, res) => {
+    try {
+        const user = await User.findByPk(req.user.id);
+        res.status(200).json({ role: user.role });
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching user role' });
+    }
+});
+
 module.exports = router;
