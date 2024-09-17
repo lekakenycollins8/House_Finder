@@ -21,7 +21,7 @@ const RoleSelection = ({ setRole }) => { // Receive setRole as a prop
                     if (role === 'landlord') {
                         navigate('/my-houses'); // Redirect landlord to their dashboard
                     } else {
-                        navigate('/role'); // Redirect renter to their home/dashboard
+                        navigate('/renter-dashboard'); // Redirect renter to their home/dashboard
                     }
                 }
             } catch (error) {
@@ -46,7 +46,7 @@ const RoleSelection = ({ setRole }) => { // Receive setRole as a prop
                 if (role === 'landlord') {
                     navigate('/my-houses'); // Navigate to landlord dashboard after successful role assignment
                 } else {
-                    navigate('/role'); // Navigate to home page for renter
+                    navigate('/renter-dashboard'); // Navigate to home page for renter
                 }
             } else {
                 console.error('Failed to assign role');

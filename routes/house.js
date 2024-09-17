@@ -59,10 +59,26 @@ router.post('/create-house', ensureAuthenticated, ensureLandlord, upload.fields(
     }
 });
 
+// Route for landlord to view their houses
+
 router.get('/my-houses', ensureAuthenticated, ensureLandlord, async (req, res) => {
     try {
         const houses = await House.findAll({
             where: { ownerId: req.user.id },
+            order: [['createdAt', 'DESC']],
+        });
+        res.status(200).json({ houses });
+    } catch (error) {
+        console.error('Error fetching houses:', error);
+        res.status(500).json({ message: 'Error fetching houses' });
+    }
+});
+
+// Route for renter to view all houses
+
+router.get('/house-listings', ensureAuthenticated, async (req, res) => {
+    try {
+        const houses = await House.findAll({
             order: [['createdAt', 'DESC']],
         });
         res.status(200).json({ houses });

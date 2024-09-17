@@ -7,6 +7,7 @@ import Signup from './pages/Signup';
 import RoleSelection from './pages/RoleSelection';
 import LandlordDashboard from './components/LandlordDashbooard';
 import LandLordListing from './components/LandlordListing';
+import RenterDashboard from './components/RenterDashboard';
 import styles from './App.css';
 
 function App() {
@@ -82,6 +83,10 @@ function App() {
         <Route
           path="/create-house"
           element={role === 'landlord' ? <LandLordListing /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/renter-dashboard"
+          element={role === 'renter' ? <RenterDashboard /> : <Navigate to="/" />}
         />
       </Routes>
     </div>
