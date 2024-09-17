@@ -5,16 +5,22 @@ import { Link } from 'react-router-dom';
 const RenterDashboard = () => {
     const [houses, setHouses] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
+    const [minPrice, setMinPrice] = useState('');
+    const [maxPrice, setMaxPrice] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const fetchHouses = async (search = '') => {
+    const fetchHouses = async (search = '', minPrice = '', maxPrice = '') => {
         setLoading(true);
         setError(null);
 
         try {
             const { data } = await axios.get(`${process.env.REACT_APP_API_URL}house/house-listings`, {
-                params: { search },
+                params: {
+                    search,
+                    minPrice: minPrice || undefined,
+                    maxPrice: maxPrice || undefined,
+                },
                 withCredentials: true,
             });
             setHouses(data.houses);
@@ -32,7 +38,7 @@ const RenterDashboard = () => {
 
     const handleSearch = (event) => {
         event.preventDefault();
-        fetchHouses(searchTerm);
+        fetchHouses(searchTerm, minPrice, maxPrice);
     };
 
     return (
@@ -48,12 +54,29 @@ const RenterDashboard = () => {
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="w-full p-2 border border-gray-300 rounded"
                 />
+                {/** Price range search */}
+                <div className="flex space-x-4 mt-2">
+                    <input
+                        type="number"
+                        placeholder="Min Price"
+                        value={minPrice}
+                        onChange={(e) => setMinPrice(e.target.value)}
+                        className="w-1/2 p-2 border border-gray-300 rounded"
+                    />
+                    <input 
+                        type="number"
+                        placeholder="Max Price"
+                        value={maxPrice}
+                        onChange={(e) => setMaxPrice(e.target.value)}
+                        className="w-1/2 p-2 border border-gray-300 rounded"
+                    />
+                </div>
                 <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 mt-2">Search
                 </button>
             </form>
 
             {/* Show loading spinner */}
-            {/* Show loading spinner */}
+
             {loading ? (
                 <div className="text-center">
                     <p>Loading...</p>
