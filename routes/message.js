@@ -1,9 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const { Message} = require('../models/Message');
-const { User } = require('../models/User');
+const Message = require('../models/Message');
 const { ensureAuthenticated } = require('../middleware/check-auth');
-const { where } = require('sequelize');
+const { Op } = require('sequelize');
 
 // Route for sending a message
 router.post('/send', ensureAuthenticated, async (req, res) => {
@@ -27,7 +26,7 @@ router.post('/send', ensureAuthenticated, async (req, res) => {
 
 // Route for fetching messages between landlord and renter
 router.get('/conversation/:houseId', ensureAuthenticated, async (req, res) => {
-    const houseId = req.params;
+    const { houseId } = req.params;
 
     try {
         const messages = await Message.findAll({

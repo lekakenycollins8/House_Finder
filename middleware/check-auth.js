@@ -14,3 +14,5 @@ const ensureLandlord = (req, res, next) => {
     }
     res.status(403).json({ message: 'Forbidden: Only landlords can create listings' });
 };
+
+module.exports = { ensureAuthenticated, ensureLandlord };

@@ -9,6 +9,7 @@ import LandlordDashboard from './components/LandlordDashbooard';
 import LandLordListing from './components/LandlordListing';
 import RenterDashboard from './components/RenterDashboard';
 import HouseDetails from './components/HouseDetails';
+import Messaging from './components/Messaging';
 import styles from './App.css';
 
 function App() {
@@ -92,6 +93,10 @@ function App() {
         <Route
           path="/house/:id"
           element={<HouseDetails />}
+        />
+        <Route
+          path="/house/:id/messages"
+          element={<Messaging />} // New route for messaging within the house context
         />
       </Routes>
     </div>

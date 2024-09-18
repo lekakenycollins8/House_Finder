@@ -4,13 +4,8 @@ const User = require('./User');
 const House = require('./House');
 
 const Message = sequelize.define('Message', {
-    id: {
-        type: DataTypes.INTEGER,
-        defaultValue: DataTypes.UUIDV4,
-        primaryKey: true,
-    },
     senderId: {
-        type: DataTypes.UUID,
+        type: DataTypes.INTEGER,
         allowNull: false,
         references: {
             model: User,
@@ -18,7 +13,7 @@ const Message = sequelize.define('Message', {
         },
     },
     receiverId: {
-        type: DataTypes.UUID,
+        type: DataTypes.INTEGER,
         allowNull: false,
         references: {
             model: User,
