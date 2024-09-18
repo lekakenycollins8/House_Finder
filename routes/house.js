@@ -4,6 +4,7 @@ const { Op } = require('sequelize');
 const House = require('../models/House');
 const User = require('../models/User');
 const upload = require('../config/uploads');
+const { parse } = require('dotenv');
 
 //Middleware to ensure user is authenticated
 const ensureAuthenticated = (req, res, next) => {
@@ -79,11 +80,13 @@ router.get('/my-houses', ensureAuthenticated, ensureLandlord, async (req, res) =
 
 router.get('/house-listings', ensureAuthenticated, async (req, res) => {
     try {
-        const { search } = req.query;
+        const { search, page = 1, pageSize = 6, minPrice, maxPrice } = req.query;
 
         let queryOptions = {
             where: {},
             order: [['createdAt', 'DESC']],
+            limit: parseInt(pageSize),
+            offset: (parseInt(page) - 1) * parseInt(pageSize),
         };
 
         if (search) {
@@ -94,8 +97,19 @@ router.get('/house-listings', ensureAuthenticated, async (req, res) => {
             ];
         }
 
-        const houses = await House.findAll(queryOptions);
-        res.status(200).json({ houses });
+        if (minPrice && maxPrice) {
+            queryOptions.where.price = { [Op.between]: [minPrice, maxPrice] };
+        } else if (minPrice) {
+            queryOptions.where.price = { [Op.gte]: minPrice };
+        } else if (maxPrice) {
+            queryOptions.where.price = { [Op.lte]: maxPrice };
+        }
+
+        const { rows: houses, count: totalCount } = await House.findAndCountAll(queryOptions);
+        res.status(200).json({
+            houses,
+            totalCount,
+        });
     } catch (error) {
         console.error('Error fetching houses:', error);
         res.status(500).json({ message: 'Error fetching houses' });
