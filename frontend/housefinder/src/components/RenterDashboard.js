@@ -106,11 +106,11 @@ const RenterDashboard = () => {
                                 <p className="text-gray-700 mb-2">Available From: {new Date(house.availableFrom).toLocaleDateString()}</p>
                                 <div className="flex flex-wrap mb-2">
                                     {house.imageUrls.map((imageUrl) => (
-                                        <img key={imageUrl} src={`${process.env.REACT_APP_API_URL}${imageUrl}`} alt={house.title} className="w-32 h-32 object-cover m-1 rounded" />
+                                        <img key={imageUrl} src={new URL(imageUrl, process.env.REACT_APP_API_URL).href} alt={house.title} className="w-32 h-32 object-cover m-1 rounded" />
                                     ))}
                                 </div>
                                 <div className="mb-2">
-                                    {house.videoUrl && <video src={`${process.env.REACT_APP_API_URL}${house.videoUrl}`} controls className="w-full rounded" />}
+                                    {house.videoUrl && <video src={new URL(house.videoUrl, process.env.REACT_APP_API_URL).href} controls className="w-full rounded" />}
                                 </div>
                             </Link>
                         ))}

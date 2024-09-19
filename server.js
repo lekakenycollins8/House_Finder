@@ -9,6 +9,7 @@ const sequelize = require('./config/db');
 const bodyParser = require('body-parser');
 const http = require('http');
 const socketIo = require('socket.io');
+const path = require('path');
 
 require('./google-auth/passport');
 const authRoutes = require('./google-auth/auth');
@@ -82,7 +83,7 @@ app.use('/auth', authRoutes);
 app.use('/role', roleRoutes);
 app.use('/house', houseRoutes);
 app.use('/messages', messageRoutes);
-app.use('/uploads', express.static('uploads'));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => { console.log(`Server running on port ${PORT}`) });

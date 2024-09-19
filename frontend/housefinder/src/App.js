@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import Home from './pages/Home'
+// import Home from './pages/Home'
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import RoleSelection from './pages/RoleSelection';
@@ -10,6 +10,8 @@ import LandLordListing from './components/LandlordListing';
 import RenterDashboard from './components/RenterDashboard';
 import HouseDetails from './components/HouseDetails';
 import Messaging from './components/Messaging';
+import LandingPage from './pages/Home/LandingPage';
+
 // import styles from './App.css';
 
 function App() {
@@ -41,17 +43,7 @@ function App() {
         <Route
           exact
           path="/"
-          element={
-            user ? (
-              role ? (
-                <Home user={user} />
-              ) : (
-                <Navigate to="/role" />
-              )
-            ) : (
-              <Navigate to="/login" />
-            )
-          }
+          element={<LandingPage user={user} />}
         />
         <Route
           exact
