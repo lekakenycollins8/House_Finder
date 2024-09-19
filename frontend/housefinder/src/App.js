@@ -10,7 +10,7 @@ import LandLordListing from './components/LandlordListing';
 import RenterDashboard from './components/RenterDashboard';
 import HouseDetails from './components/HouseDetails';
 import Messaging from './components/Messaging';
-import styles from './App.css';
+// import styles from './App.css';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -36,7 +36,7 @@ function App() {
   }, []);
 
   return (
-    <div className={styles.container}>
+    <div className="container mx-auto p-4">
       <Routes>
         <Route
           exact

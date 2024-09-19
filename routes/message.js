@@ -28,6 +28,10 @@ router.post('/send', ensureAuthenticated, async (req, res) => {
 router.get('/conversation/:houseId', ensureAuthenticated, async (req, res) => {
     const { houseId } = req.params;
 
+    if (!houseId || isNaN(parseInt(houseId, 10))) {
+        return res.status(400).json({ error: 'Invalid houseId' });
+      }
+
     try {
         const messages = await Message.findAll({
             where: {

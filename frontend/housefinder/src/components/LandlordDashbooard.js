@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import Messaging from './Messaging';
 
 const LandlordDashboard = () => {
     const [houses, setHouses] = useState([]);
@@ -24,23 +25,25 @@ const LandlordDashboard = () => {
         <div className="container mx-auto p-4">
             <h1 className="text-3xl font-bold mb-4">My Houses</h1>
             {houses.length > 0 ? (
-                houses.map((house) => (
-                    <div key={house.id} className="bg-white shadow-md rounded-lg p-4 mb-4">
-                        <h2 className="text-2xl font-semibold mb-2">{house.title}</h2>
-                        <p className="text-gray-700 mb-2">{house.description}</p>
-                        <p className="text-gray-700 mb-2">{house.location}</p>
-                        <p className="text-gray-700 mb-2">{house.price}</p>
-                        <p className="text-gray-700 mb-2">Available From: {new Date(house.availableFrom).toLocaleDateString()}</p>
-                        <div className="flex flex-wrap mb-2">
-                            {house.imageUrls.map((imageUrl) => (
-                                <img key={imageUrl} src={`${process.env.REACT_APP_API_URL}${imageUrl}`} alt={house.title} className="w-32 h-32 object-cover m-1 rounded" />
-                            ))}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {houses.map((house) => (
+                        <div key={house.id} className="bg-white shadow-md rounded-lg p-4">
+                            <h2 className="text-2xl font-semibold mb-2">{house.title}</h2>
+                            <p className="text-gray-700 mb-2">{house.description}</p>
+                            <p className="text-gray-700 mb-2">{house.location}</p>
+                            <p className="text-gray-700 mb-2">{house.price}</p>
+                            <p className="text-gray-700 mb-2">Available From: {new Date(house.availableFrom).toLocaleDateString()}</p>
+                            <div className="flex flex-wrap mb-2">
+                                {house.imageUrls.map((imageUrl) => (
+                                    <img key={imageUrl} src={`${process.env.REACT_APP_API_URL}${imageUrl}`} alt={house.title} className="w-32 h-32 object-cover m-1 rounded" />
+                                ))}
+                            </div>
+                            <div className="mb-2">
+                                {house.videoUrl && <video src={`${process.env.REACT_APP_API_URL}${house.videoUrl}`} controls className="w-full rounded" />}
+                            </div>
                         </div>
-                        <div className="mb-2">
-                            {house.videoUrl && <video src={`${process.env.REACT_APP_API_URL}${house.videoUrl}`} controls className="w-full rounded" />}
-                        </div>
-                    </div>
-                ))
+                    ))}
+                </div>
             ) : (
                 <div className="text-center">
                     <Link 
@@ -62,6 +65,7 @@ const LandlordDashboard = () => {
                     </Link>
                 </div>
             )}
+            <Messaging />
         </div>
     );
 };

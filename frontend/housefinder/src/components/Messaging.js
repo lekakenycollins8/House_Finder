@@ -45,10 +45,29 @@ const Messaging = ({ houseId }) => {
 
     const sendMessage = async () => {
 
-        const receiverId = messages.length > 0 ? (messages[0].senderId === currentUserId ? messages[0].receiverId : messages[0].senderId) : null;
+        let receiverId = null;
+
+        if (messages.length > 0) {
+            receiverId = messages[0].senderId === currentUserId ? messages[0].receiverId : messages[0].senderId;
+        } else {
+            try {
+                const { data } = await axios.get(`${process.env.REACT_APP_API_URL}house/house/${houseId}`, {
+                    withCredentials: true,
+                });
+
+                if (currentUserRole === 'landlord') {
+                    receiverId = data.house.renterId;
+                } else {
+                    receiverId = data.house.ownerId;
+                }
+                
+            } catch (error) {
+                console.error('Error fetching house owner:', error);
+            }
+        }
 
         if (!receiverId) {
-            console.error('Receiver ID is missing');
+            console.error('Receiver ID is missing. Cannot send message.');
             return;
         }
         
@@ -78,7 +97,7 @@ const Messaging = ({ houseId }) => {
                 {messages.map((message) => (
                     <div key={message.id} className={`mb-2 p-2 rounded-lg ${message.senderId === currentUserId ? 'bg-blue-500 text-white self-end' : 'bg-gray-300 text-black self-start'}`}>
                         <p>
-                            {message.senderId === currentUserId ? 'You' : currentUserRole === 'landlord' ? 'Renter' : 'Landlord'}
+                            {message.senderId === currentUserId ? 'You' : currentUserRole === 'landlord' ? 'Landlord' : 'Renter'}
                             : {message.content}
                         </p>
                     </div>
