@@ -6,7 +6,7 @@ import Logo from './logo.png';
 const Hero = () => {
 return (
     <div className="relative">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+        <div className="max-w-6xl mx-auto px-2 sm:px-2">
             <div className="pt-4 pb-12 md:pt-6 md:pb-20"> {/* Reduced padding-top */}
                 <nav className="flex justify-between items-center py-4">
                     <div className="text-2xl font-bold">
