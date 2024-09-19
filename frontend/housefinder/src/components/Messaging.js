@@ -46,6 +46,12 @@ const Messaging = ({ houseId }) => {
     const sendMessage = async () => {
 
         const receiverId = messages.length > 0 ? (messages[0].senderId === currentUserId ? messages[0].receiverId : messages[0].senderId) : null;
+
+        if (!receiverId) {
+            console.error('Receiver ID is missing');
+            return;
+        }
+        
         try {
             await axios.post(`${process.env.REACT_APP_API_URL}messages/send`, {
                 houseId,
