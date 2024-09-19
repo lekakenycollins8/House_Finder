@@ -1,15 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import HeroImage from './hero.png';
+import Logo from './logo.png';
 
 const Hero = () => {
 return (
     <div className="relative">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
-            <div className="pt-8 pb-12 md:pt-12 md:pb-20"> {/* Reduced padding-top */}
+            <div className="pt-4 pb-12 md:pt-6 md:pb-20"> {/* Reduced padding-top */}
                 <nav className="flex justify-between items-center py-4">
                     <div className="text-2xl font-bold">
-                        <Link to="/">House Finder</Link>
+                        <Link to="/">
+                            <img src={Logo} alt="House Finder Logo" className="h-auto w-15" /> {/* Increased height */}
+                        </Link>
                     </div>
                     <div className="flex space-x-1">
                         <Link className="btn text-white bg-green-600 hover:bg-green-700 rounded-full px-6 py-3 text-lg" to="/signup">
